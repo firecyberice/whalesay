@@ -1,13 +1,21 @@
-FROM ubuntu:14.04
+FROM alpine:3.2
 
-# install cowsay, and move the "default.cow" out of the way so we can overwrite it with "docker.cow"
-RUN apt-get update && apt-get install -y cowsay --no-install-recommends && rm -rf /var/lib/apt/lists/* \
-	&& mv /usr/share/cowsay/cows/default.cow /usr/share/cowsay/cows/orig-default.cow
+# install cowsay
+RUN apk update \
+    && apk add git perl \
+    && cd /tmp/ \
+    && git clone https://github.com/jasonm23/cowsay.git \
+    && cd cowsay && ./install.sh /usr/local \
+    && cd .. \
+    && rm -rf cowsay \
+    && apk del git
 
-# "cowsay" installs to /usr/games
-ENV PATH $PATH:/usr/games
+ENV PATH $PATH
+COPY docker.cow /usr/local/share/cows/
 
-COPY docker.cow /usr/share/cowsay/cows/
-RUN ln -sv /usr/share/cowsay/cows/docker.cow /usr/share/cowsay/cows/default.cow
+# Move the "default.cow" out of the way so we can overwrite it with "docker.cow"
+RUN \
+    mv /usr/local/share/cows/default.cow /usr/local/share/cows/orig-default.cow \
+    && ln -sv /usr/local/share/cows/docker.cow /usr/local/share/cows/default.cow
 
-CMD ["cowsay"]
+ENTRYPOINT ["cowsay"]
