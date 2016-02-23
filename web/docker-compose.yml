@@ -1,0 +1,28 @@
+version: "2"
+
+services:
+  develop:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+#    image: whaleweb_prod
+    working_dir: /usr/src/app
+#    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/usr/src/app/
+    ports:
+      - 5000:5000
+    command: "python app.py"
+    networks:
+      - default
+
+  test:
+    image: alpine:3.2
+    command: "apk update && apk add curl && curl -L 'http://develop:5000/message/Hello%20Hypriot'"
+    depends_on:
+      - develop
+    links:
+      - develop
+    networks:
+      - default
