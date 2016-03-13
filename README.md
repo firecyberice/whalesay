@@ -1,5 +1,5 @@
 ```
-______________ 
+______________
 < Hello Docker >
 --------------
    \
@@ -17,7 +17,15 @@ ______________
 ```
 ### Usage:
 
-`docker run firecyberice/whalesay Hello Docker`
+## Whalesay only
+
+`docker run --rm firecyberice/whalesay Hello Docker`
+
+## Whalesay with web API
+
+`docker run -d --rm --name whaleweb -v /var/run/docker.sock:/var/run/docker.sock -P firecyberice/whalesay:web`
+
+`docker run --rm --link whaleweb alpine:3.2 bin/sh -c "apk add --update curl && curl -sL 'http://whaleweb:5000/message/Hello%20Hypriot'"`
 
 ### Links:
 
