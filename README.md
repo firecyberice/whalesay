@@ -17,11 +17,11 @@ ______________
 ```
 ### Usage:
 
-## Whalesay only
+#### Whalesay only
 
 `docker run --rm firecyberice/whalesay Hello Docker`
 
-## Whalesay with web API
+#### Whalesay with web API
 
 `docker run -d --rm --name whaleweb -v /var/run/docker.sock:/var/run/docker.sock -P firecyberice/whalesay:web`
 
