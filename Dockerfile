@@ -1,14 +1,14 @@
-FROM alpine:3.2
+FROM alpine:latest
 
 # install cowsay
-RUN apk update \
-    && apk add git perl \
-    && cd /tmp/ \
-    && git clone https://github.com/jasonm23/cowsay.git \
-    && cd cowsay && ./install.sh /usr/local \
-    && cd .. \
-    && rm -rf cowsay \
-    && apk del git
+RUN apk add --no-cache curl perl ca-certificates && \
+    cd /tmp/ && \
+    curl -sSLO https://github.com/jasonm23/cowsay/archive/master.zip && \
+    unzip master.zip && \
+    cd cowsay-master && \
+    ./install.sh /usr/local && \
+    cd .. && \
+    rm -rf cowsay master.zip
 
 ENV PATH $PATH
 COPY docker.cow /usr/local/share/cows/
