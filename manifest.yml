@@ -1,0 +1,10 @@
+image: firecyberice/whalesay:latest
+manifests:
+  - image: firecyberice/whalesay:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  - image: firecyberice/whalesay:arm
+    platform:
+      architecture: arm
+      os: linux
